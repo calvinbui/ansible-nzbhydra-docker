@@ -1,0 +1,37 @@
+---
+
+- name: Create NZBHydra directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - "{{ nzbhydra_config_directory }}"
+
+- name: Set Docker container parameters
+  set_fact:
+    nzbhydra_container_parameters:
+      name: "{{ nzbhydra_name }}"
+      image: "{{ nzbhydra_image }}"
+      state: started
+      published_ports: "{{ nzbhydra_ports }}"
+      volumes:
+        - "{{ nzbhydra_config_directory }}:/config"
+        - "{{ nzbhydra_download_directory }}:/downloads"
+      env: "{{ nzbhydra_environment_variables }}"
+
+- name: Create NZBHydra container
+  docker_container: "{{ nzbhydra_container_parameters | combine(nzbhydra_docker_additional_options) }}"
+  register: nzbhydra_container
+
+- name: Wait for NZBHydra start
+  wait_for:
+    port: "{{ nzbhydra_ports[0].split(':')[0] }}"
+    host: "{{ nzbhydra_container.container.NetworkSettings.IPAddress }}"
+
+- name: Configure NZBHydra
+  yedit:
+    src: "{{ nzbhydra_config_directory }}/nzbhydra.yml"
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+  loop: "{{ nzbhydra_config | dict2items }}"
+  notify: Restart NZBHydra
