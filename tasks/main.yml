@@ -33,5 +33,5 @@
     src: "{{ nzbhydra_config_directory }}/nzbhydra.yml"
     key: "{{ item.key }}"
     value: "{{ item.value }}"
-  loop: "{{ nzbhydra_config | dict2items }}"
+  loop: "{{ lookup('dict', nzbhydra_config) }}"
   notify: Restart NZBHydra
