@@ -28,6 +28,11 @@
     port: "{{ nzbhydra_ports[0].split(':')[0] }}"
     host: "{{ nzbhydra_container.container.NetworkSettings.IPAddress }}"
 
+- name: Wait until the string "completed" is in the file  before continuing
+  wait_for:
+    path: "{{ nzbhydra_config_directory }}/logs//nzbhydra2.log"
+    search_regex: "Started NzbHydra in"
+
 - name: Configure NZBHydra
   yedit:
     src: "{{ nzbhydra_config_directory }}/nzbhydra.yml"
