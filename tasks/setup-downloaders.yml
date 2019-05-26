@@ -1,4 +1,11 @@
 ---
+
+# this is some black magic to:
+# 1. check if NZBHydra has the downloader configured based on its name
+# 2. if it is configured then grab it's index in the list
+# 3. update the dictionary key/values in that list index to match vars
+# 4. if doesn't exist, append it to the downloaders list
+
 - name: Init list index variable
   set_fact:
     downloader_configured_index: ''

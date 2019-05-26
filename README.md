@@ -24,6 +24,10 @@ N/A
 
 `nzbhydra_config`: Options to change in configuration file
 
+`nzbhydra_downloaders`: A list of dictionaries containing the options for reach downloader
+
+`nzbhydra_indexers`: A list of dictionaries containing the options for reach indexer
+
 ## Dependencies
 
 N/A
