@@ -54,3 +54,17 @@
   loop_control:
     loop_var: nzbhydra_downloader_item
     index_var: nzbhydra_downloader_index
+
+- name: Grab NZBHydra indexers
+  yedit:
+    src: "{{ nzbhydra_config_directory }}/nzbhydra.yml"
+    key: "indexers"
+    state: list
+  register: current_configured_indexers
+
+- name: Configure NZBHydra indexers
+  include_tasks: setup-indexers.yml
+  loop: "{{ nzbhydra_indexers }}"
+  loop_control:
+    loop_var: nzbhydra_indexer_item
+    index_var: nzbhydra_indexer_index

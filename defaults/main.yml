@@ -30,3 +30,15 @@ nzbhydra_downloaders:
     nzbAddingType: "UPLOAD"
     url: "http://localhost:8080"
     enabled: 'true'
+
+nzbhydra_indexers:
+  - apiKey: '123'
+    host: "https://abnzb.com"
+    name: "abnzb"
+    downloadLimit: 25
+    hitLimit: 25
+  - apiKey: "123"
+    host: "https://api.althub.co.za"
+    name: "althub"
+  - host: "https://anizb.org"
+    name: "anizb"
