@@ -8,29 +8,30 @@
 
 - name: Init list index variable
   set_fact:
-    indexer_configured_index: ''
+    nzbhydra_configured_indexer_index: ''
 
 - name: Find {{ nzbhydra_indexer_item['name'] }} in Indexers and store its index in the list
   set_fact:
-    indexer_configured_index: "{{ indexer_configured_index_loop }}"
-  loop: "{{ current_configured_indexers.result }}"
+    nzbhydra_configured_indexer_index: "{{ nzbhydra_configured_indexer_index_loop }}"
+  loop: "{{ nzbhydra_configured_indexers.result }}"
   loop_control:
-    index_var: indexer_configured_index_loop
+    index_var: nzbhydra_configured_indexer_index_loop
   when:
-    - current_configured_indexers.result | selectattr('name', 'match', nzbhydra_indexer_item['name']) | list | count > 0
+    - nzbhydra_configured_indexers.result | selectattr('name', 'match', nzbhydra_indexer_item['name']) | list | count > 0
     - item['name'] == nzbhydra_indexer_item['name']
 
-- name: Debug index
-  debug:
-    var: indexer_configured_index
+- name: Append to nzbhydra_var_indexers_index if exists
+  set_fact:
+    nzbhydra_var_indexers_index: "{{  nzbhydra_var_indexers_index + [ nzbhydra_configured_indexer_index ] }}"
+  when: nzbhydra_configured_indexer_index != ''
 
 - name: Configure indexer if exists using its index in the list
   yedit:
     src: "{{ nzbhydra_config_directory }}/nzbhydra.yml"
-    key: "indexers.[{{ indexer_configured_index }}].{{ item.key }}"
+    key: "indexers.[{{ nzbhydra_configured_indexer_index }}].{{ item.key }}"
     value: "{{ item.value }}"
   loop: "{{ nzbhydra_indexer_item | dict2items }}"
-  when: indexer_configured_index != ''
+  when: nzbhydra_configured_indexer_index != ''
 
 - name: Append indexer to list if not found
   yedit:
@@ -38,4 +39,4 @@
     key: "indexers"
     value: "{{ nzbhydra_indexer_item }}"
     append: true
-  when: indexer_configured_index == ''
+  when: nzbhydra_configured_indexer_index == ''
