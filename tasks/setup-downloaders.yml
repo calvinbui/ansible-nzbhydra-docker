@@ -1,0 +1,34 @@
+---
+- name: Init list index variable
+  set_fact:
+    downloader_configured_index: ''
+
+- name: Find {{ nzbhydra_downloader_item['name'] }} in Downloaders and store its index in the list
+  set_fact:
+    downloader_configured_index: "{{ downloader_configured_index_loop }}"
+  loop: "{{ current_configured_downloaders.result }}"
+  loop_control:
+    index_var: downloader_configured_index_loop
+  when:
+    - current_configured_downloaders.result | selectattr('name', 'match', nzbhydra_downloader_item['name']) | list | count > 0
+    - item['name'] == nzbhydra_downloader_item['name']
+
+- name: Debug index
+  debug:
+    var: downloader_configured_index
+
+- name: Configure downloader if exists using its index in the list
+  yedit:
+    src: "{{ nzbhydra_config_directory }}/nzbhydra.yml"
+    key: "downloading.downloaders.[{{ downloader_configured_index }}].{{ item.key }}"
+    value: "{{ item.value }}"
+  loop: "{{ nzbhydra_downloader_item | dict2items }}"
+  when: downloader_configured_index != ''
+
+- name: Append downloader to list if not found
+  yedit:
+    src: "{{ nzbhydra_config_directory }}/nzbhydra.yml"
+    key: "downloading.downloaders"
+    value: "{{ nzbhydra_downloader_item }}"
+    append: true
+  when: downloader_configured_index == ''

@@ -22,3 +22,11 @@ nzbhydra_config:
   main.urlBase: "example.com"
   main.verifySsl: "false"
   main.welcomeShown: "true"
+
+nzbhydra_downloaders:
+  - downloadType: "NZB"
+    downloaderType: "SABNZBD"
+    name: "SABnzbd"
+    nzbAddingType: "UPLOAD"
+    url: "http://localhost:8080"
+    enabled: 'true'

@@ -35,3 +35,17 @@
     value: "{{ item.value }}"
   loop: "{{ lookup('dict', nzbhydra_config) }}"
   notify: Restart NZBHydra
+
+- name: Grab NZBHydra downloaders
+  yedit:
+    src: "{{ nzbhydra_config_directory }}/nzbhydra.yml"
+    key: "downloading.downloaders"
+    state: list
+  register: current_configured_downloaders
+
+- name: Configure NZBHydra downloaders
+  include_tasks: setup-downloaders.yml
+  loop: "{{ nzbhydra_downloaders }}"
+  loop_control:
+    loop_var: nzbhydra_downloader_item
+    index_var: nzbhydra_downloader_index
