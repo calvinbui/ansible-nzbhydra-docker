@@ -32,6 +32,7 @@
   wait_for:
     path: "{{ nzbhydra_config_directory }}/logs//nzbhydra2.log"
     search_regex: "Started NzbHydra in"
+  when: nzbhydra_container is changed
 
 - name: Configure NZBHydra
   yedit:
