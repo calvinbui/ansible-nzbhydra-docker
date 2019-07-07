@@ -8,8 +8,8 @@
     pip_install_packages:
       - name: docker
         executable: pip3
-      - name: pyyaml
-        executable: pip3
+    apt_install_packages:
+      - name: python3-yaml
   pre_tasks:
     - name: Update apt cache.
       apt:
@@ -22,3 +22,4 @@
       delay: 5
   roles:
     - calvinbui.ansible_pip
+    - calvinbui.ansible_apt

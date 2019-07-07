@@ -11,6 +11,7 @@ lint:
 platforms:
   - name: ansible-nzbhydra-docker
     image: geerlingguy/docker-ubuntu1804-ansible
+    command: ""
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp:/tmp
