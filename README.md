@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.com/calvinbui/ansible-nzbhydra-docker.svg?branch=master)](https://travis-ci.com/calvinbui/ansible-nzbhydra-docker)
+![GitHub release](https://img.shields.io/github/release/calvinbui/ansible-nzbhydra-docker.svg)
+![Ansible Quality Score](https://img.shields.io/ansible/quality/40538.svg)
+![Ansible Role](https://img.shields.io/ansible/role/d/40538.svg)
+
 # Ansible NZBHydra
 
 NZBHydra in Docker
