@@ -23,12 +23,7 @@
   docker_container: "{{ nzbhydra_container_parameters | combine(nzbhydra_docker_additional_options) }}"
   register: nzbhydra_container
 
-- name: Wait for NZBHydra start
-  wait_for:
-    port: "{{ nzbhydra_ports[0].split(':')[0] }}"
-    host: "{{ nzbhydra_container.container.NetworkSettings.IPAddress }}"
-
-- name: Wait until the string "completed" is in the file  before continuing
+- name: Wait until the string "completed" is in the file before continuing
   wait_for:
     path: "{{ nzbhydra_config_directory }}/logs//nzbhydra2.log"
     search_regex: "Started NzbHydra in"
