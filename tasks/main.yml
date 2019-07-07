@@ -78,6 +78,7 @@
     key: "downloading.downloaders[{{ item }}]"
     state: absent
   loop: "{{ nzbhydra_configured_downloaders_index | difference(nzbhydra_var_downloaders_index) | sort(reverse=true) }}"
+  when: nzbhydra_configured_downloaders_index | difference(nzbhydra_var_downloaders_index) | length > 0
 
 #### Indexers config
 
@@ -120,3 +121,4 @@
     key: "indexers[{{ item }}]"
     state: absent
   loop: "{{ nzbhydra_configured_indexers_index | difference(nzbhydra_var_indexers_index) | sort(reverse=true) }}"
+  when: nzbhydra_configured_indexers_index | difference(nzbhydra_var_indexers_index) | length > 0
